@@ -4,6 +4,8 @@ import { LoginPage } from '../pom/LoginPage';
 import { DescriptionPage } from '../pom/DescriptionPage';
 import { generateProjectName } from '../helpers/utils';
 import { safeClick } from '../helpers/utils';
+import fs from 'fs';
+import path from 'path/win32';
 
 test('pr-creation', async ({ page }) => {
     const loginPage = new LoginPage(page);
@@ -65,5 +67,6 @@ test('pr-creation', async ({ page }) => {
 
     await expect(page.getByRole('heading', { name: 'Thanks for Submitting!' }))
         .toBeVisible();
+    fs.writeFileSync(path.join(__dirname, '../pr-name.txt'), projectName, 'utf-8');
     console.log(`Done: ${projectName} created successfully`);
 });

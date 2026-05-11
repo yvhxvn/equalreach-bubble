@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+  "app": "electron app/main.js"
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -11,6 +13,11 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0-alpha-2026-04-06",
     "@types/node": "^25.2.3",
-    "dotenv": "^17.4.2"
+    "allure-commandline": "^2.40.0",
+    "dotenv": "^17.4.2",
+    "electron": "^42.0.1"
+  },
+  "dependencies": {
+    "allure-playwright": "^3.8.0"
   }
 }

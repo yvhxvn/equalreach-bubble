@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>EqualReach Test Runner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 30px;
+      margin: 0;
+    }
+    h1 {
+      color: #38bdf8;
+      margin-bottom: 5px;
+    }
+    p {
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    #runBtn {
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: bold;
+    }
+    #runBtn:disabled {
+      background: #334155;
+      color: #64748b;
+      cursor: not-allowed;
+    }
+    #reportBtn {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #38bdf8;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+    #log {
+      margin-top: 15px;
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 15px;
+      height: 320px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      color: #a3e635;
+    }
+  </style>
+</head>
+<body>
+  <h1>EqualReach Test Runner</h1>
+  <p>Smoke tests for all critical flows</p>
+
+  <button id="runBtn">▶ Run All Tests</button>
+  <button id="reportBtn">Open Allure Report</button>
+
+  <div id="status">● Ready</div>
+  <div id="log"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const runBtn = document.getElementById('runBtn');
+    const reportBtn = document.getElementById('reportBtn');
+    const status = document.getElementById('status');
+    const log = document.getElementById('log');
+
+    runBtn.addEventListener('click', () => {
+      log.textContent = '';
+      status.textContent = 'Running tests...';
+      status.style.color = '#fbbf24';
+      runBtn.disabled = true;
+      ipcRenderer.send('run-tests');
+    });
+
+    reportBtn.addEventListener('click', () => {
+      ipcRenderer.send('open-report');
+    });
+
+    ipcRenderer.on('log', (_, data) => {
+      log.textContent += data;
+      log.scrollTop = log.scrollHeight;
+    });
+
+    ipcRenderer.on('done', (_, code) => {
+      runBtn.disabled = false;
+      if (code === 0) {
+        status.textContent = 'All tests passed!';
+        status.style.color = '#4ade80';
+      } else {
+        status.textContent = 'Some tests failed!';
+        status.style.color = '#f87171';
+      }
+    });
+  </script>
+</body>
+</html>
