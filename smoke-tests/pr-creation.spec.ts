@@ -54,10 +54,10 @@ test('pr-creation', async ({ page }) => {
     const lorem = 'Lorem ipsum.';
     await descriptionPage
         .fillDescriptionByIndex(0, lorem);
-    await descriptionPage
-        .fillDescriptionByIndex(1, lorem);
     await safeClick(page.getByRole('button', { name: 'Save & Continue' }));
 
+    await descriptionPage
+        .fillDescriptionByIndex(1, lorem);
     await descriptionPage
         .fillDescriptionByIndex(2, lorem);
     await page.waitForTimeout(800);

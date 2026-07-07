@@ -11,12 +11,13 @@ test('project-completion', async ({ page }) => {
 
     await page.getByText('Projects', { exact: true })
         .click();
-    await page.getByRole('combobox')
+    await page.getByRole('textbox', { name: 'Enter project name' })
         .click();
-    await page.getByRole('combobox')
+    await page.getByRole('textbox', { name: 'Enter project name' })
         .pressSequentially(PR_NAME, { delay: 100 });
-    await page.getByRole('combobox')
-        .selectOption({ label: PR_NAME });
+    await page.locator('span')
+        .nth(1)
+        .click();
     await page.getByRole('button', { name: 'View Details' })
         .first()
         .click();

@@ -14,8 +14,6 @@ test('dp-submission', async ({ page }) => {
 
     await page.getByText('Proposals', { exact: true })
         .click();
-    await page.getByRole('heading', { name: PR_NAME, exact: true })
-        .waitFor({ state: 'visible' });
     await page.getByRole('button', { name: 'Review Project Request' })
         .first()    
         .click();
@@ -25,10 +23,27 @@ test('dp-submission', async ({ page }) => {
     await page.getByRole('button', { name: 'Accept the Request' })
         .click();
 
-    await page.locator('div')
-        .filter({ hasText: /^Lorem Ipsum$/ })
+    await page.getByRole('button', { name: 'Start Proposal' })
+        .click();
+
+    await page.waitForTimeout(1000);
+    await page.locator('.bubble-element.TableCell.a1778832614642x705836671676668300')
         .first()
         .click();
+    await page.waitForTimeout(1000);
+    await page.locator('div').filter({ hasText: /^Lorem Ipsum$/ })
+        .nth(2)
+        .click({ force: true });
+    await page.waitForTimeout(1000);
+    await page.locator('div').filter({ hasText: /^Test$/ })
+        .first()
+        .click({ force: true });
+    await page.waitForTimeout(1000);
+    await page.locator('div').filter({ hasText: /^test$/ })
+        .first()
+        .click({ force: true });
+    await page.waitForTimeout(1000);
+
     await safeClick(page.getByRole('button', { name: 'Save & Continue' }));
 
     await page.locator('#richtext-editor-3 > .ql-editor')
@@ -80,7 +95,23 @@ test('dp-submission', async ({ page }) => {
         .click();
     await page.waitForTimeout(500);
     await safeClick(page.getByRole('button', { name: 'Save & Continue' }));
-    await page.waitForTimeout(100);
+
+    await page.getByRole('textbox', { name: '/07/2026' })
+        .click();
+    await page.getByRole('button', { name: 'Today' })
+        .click();
+    await page.waitForTimeout(500);
+
+    await page.getByRole('textbox', { name: 'Type here...' })
+        .click();
+    await page.getByRole('textbox', { name: 'Type here...' })
+        .pressSequentially('1', { delay: 50 });
+    await page.waitForTimeout(300);
+
+    await page.getByRole('combobox')
+        .selectOption('day(s)');
+    await page.waitForTimeout(300);
+
     await safeClick(page.getByRole('button', { name: 'Save & Continue' }));
     await page.waitForTimeout(100);
     await safeClick(page.getByRole('button', { name: 'Save & Continue' }));
@@ -88,11 +119,10 @@ test('dp-submission', async ({ page }) => {
     await safeClick(page.getByRole('button', { name: 'Save & Continue' }));
     await page.waitForTimeout(100);
 
-    await page.getByRole('button', { name: 'Services Agreement' })
+    await page.getByRole('button', { name: 'Services Agreement' }) 
         .click();
-    
-    const agreement = page.getByText('Serbices AgreementPARTIES');
-    await page.getByText('28. Jurisdiction').scrollIntoViewIfNeeded();
+    await page.getByText('28. Jurisdiction')
+        .scrollIntoViewIfNeeded();
 
     await page.getByRole('textbox', { name: 'Sign here...' })
         .click();

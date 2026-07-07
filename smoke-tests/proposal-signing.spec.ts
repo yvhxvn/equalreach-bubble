@@ -17,7 +17,7 @@ test('proposal-signing', async ({ page }) => {
         .click();
     await page.getByRole('button', { name: 'View Proposal' })
         .click();
-    await page.locator('div').filter({ hasText: /^Next Steps$/ })
+    await page.locator('div').filter({ hasText: /^Sign & Next Steps$/ })
         .nth(1)
         .click();
     await page.getByRole('textbox', { name: 'Please enter your full name' })

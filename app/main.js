@@ -11,7 +11,7 @@ app.whenReady().then(() => {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    title: 'EqualReach Test Runner',
+    title: 'EqualReach Test Runner (DEMO)',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
